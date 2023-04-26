@@ -128,6 +128,7 @@ variable "map_public_ip_on_launch" {
 variable "subnet_type_tag_key" {
   type        = string
   description = "Key for subnet type tag to provide information about the type of subnets, e.g. `cpco/subnet/type=private` or `cpcp/subnet/type=public`"
+  default     = ""
 }
 
 variable "max_subnet_count" {
@@ -192,4 +193,22 @@ variable "interface_vpc_endpoints" {
   type        = set(string)
   description = "A list of Interface VPC Endpoints to provision into the VPC."
   default     = []
+}
+
+variable "existing" {
+  type = object({
+    vpc_id                  = optional(string, "")
+    cidr_block              = optional(string, "")
+    tags                    = optional(map(string), {})
+    default_sg_id           = optional(string, null)
+    interface_vpc_endpoints = optional(list(string), [])
+    gateway_vpc_endpoints   = optional(list(string), [])
+    nat_instance_ids        = optional(list(string), [])
+    subnets = optional(object({
+      private = optional(list(string), [])
+      public  = optional(list(string), [])
+    }), { private = [], public = [] })
+  })
+  default     = null
+  description = "Existing VPC"
 }
