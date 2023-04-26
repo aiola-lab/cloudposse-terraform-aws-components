@@ -1,5 +1,5 @@
 module "vpc_flow_logs_bucket" {
-  count = var.vpc_flow_logs_enabled ? 1 : 0
+  count = var.vpc_flow_logs_enabled && var.enabled ? 1 : 0
 
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
   version = "1.4.1"
